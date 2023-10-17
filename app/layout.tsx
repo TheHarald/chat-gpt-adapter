@@ -1,9 +1,7 @@
 import "@/styles/globals.css";
 import { Metadata } from "next";
-import { fontSans } from "@/config/fonts";
 import { Providers } from "./providers";
 import { Link } from "@nextui-org/link";
-import clsx from "clsx";
 
 export const metadata: Metadata = {
   icons: {

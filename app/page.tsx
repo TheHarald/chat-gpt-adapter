@@ -13,7 +13,7 @@ export default function Home() {
   const [isLoading, setIsLoading] = useState(false);
 
   const [chatChoices, _, deleteChoiceById, addChoice] =
-    useLocalStorage<TChatResponseChoice>("ansvers", []);
+    useLocalStorage<TChatResponseChoice>("answers", []);
 
   const searchHandler = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -31,7 +31,7 @@ export default function Home() {
   };
 
   return (
-    <section className="flex flex-col gap-8 flex-1">
+    <div className="flex flex-col gap-8 flex-1">
       <form onSubmit={searchHandler} className="flex flex-row gap-2">
         <Input
           value={inputValue}
@@ -41,7 +41,7 @@ export default function Home() {
         />
         <Button type="submit"> Спросить</Button>
       </form>
-      <section className="flex flex-col gap-2">
+      <div className="flex flex-col gap-2">
         {chatChoices.map((choice, index) => {
           return (
             <ChatResponseMessage
@@ -53,7 +53,7 @@ export default function Home() {
           );
         })}
         {isLoading && <Spinner />}
-      </section>
-    </section>
+      </div>
+    </div>
   );
 }

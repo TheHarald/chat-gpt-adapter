@@ -13,12 +13,30 @@ const useLocalStorage = <T extends StoredObject>(
 ): [T[], SetValue<T[]>, (id: string) => void, (item?: T[]) => void] => {
   const isBrowser = typeof window !== "undefined";
 
-  const storedValue = isBrowser ? localStorage.getItem(key) : null;
-  const initial: T[] = storedValue
-    ? (JSON.parse(storedValue) as T[])
-    : initialValue;
+  const initialize = () => {
+    if (isBrowser) {
+      return initialValue;
+    }
+    try {
+      // Get from local storage by key
+      const item = window.localStorage.getItem(key);
+      // Parse stored json or if none return initialValue
+      return item ? JSON.parse(item) : initialValue;
+    } catch (error) {
+      // If error also return initialValue
+      console.log(error);
+      return initialValue;
+    }
+  };
 
-  const [value, setValue] = useState<T[]>(initial);
+  useEffect(() => {
+    if (!isBrowser) {
+      setStoredValue(initialize());
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  const [value, setValue] = useState<T[]>(() => initialValue);
 
   const deleteItemById = (id: string) => {
     const updatedValue = value.filter((item) => item.id !== id);
